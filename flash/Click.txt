@@ -1,0 +1,31 @@
+package{
+ import flash.display.Sprite;
+ import flash.events.MouseEvent;
+
+ public class ClickTest extends Sprite{
+  public function ClickTest():void{
+   //クリックイベントを監視する
+   stage.addEventListener("click",clickHandler);
+  }
+
+  private function clickHandler(event:MouseEvent):void{
+   //円を作成
+   var s:Sprite=new Sprite();
+   s.graphics.beginFill(Math.random()*0x1000000);
+   s.graphics.drawCircle(0,0,10);
+   s.graphics.endFill();
+   addChild(s);
+
+   //円をクリックされた位置に移動
+   s.x=event.stageX;
+   s.y=event.stageY;
+
+   s.addEventListener("click",
+    function(event:MouseEvent):void{
+     removeChild(s);
+     event.stopPropagation();
+    });
+  }
+ }
+}
+

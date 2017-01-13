@@ -1,0 +1,44 @@
+package{
+ import flash.display.Sprite;
+ import flash.events.MouseEvent;
+ import flash.events.Event;
+ import flash.utils.Timer;
+
+ public class Anime extends Sprite{
+  public function Anime():void{
+   //クリックイベントを監視する
+   stage.addEventListener("click",clickHandler);
+  }
+
+  private function clickHandler(event:MouseEvent):void{
+   //円を作成
+   var s:Sprite=new Sprite();
+   s.graphics.beginFill(Math.random()*0x1000000);
+   s.graphics.drawCircle(20,0,10);
+   s.graphics.endFill();
+   addChild(s);
+
+   //円をクリックされた位置に移動
+   s.x=event.stageX;
+   s.y=event.stageY;
+
+   //初期スケールの設定
+   s.scaleX=s.scaleY=0;
+
+   //タイマー開始
+   var timer:Timer=new Timer(50,20);
+   timer.start();
+   timer.addEventListener("timer",
+    function(event:Event):void{
+     var ratio:Number=timer.currentCount/timer.repeatCount;
+     s.alpha=1-ratio;
+     s.scaleX=s.scaleY=5*ratio;
+     s.rotation=360*ratio;
+    });
+   timer.addEventListener("timeComplete",
+    function(event:Event):void{
+     removeChild(s);
+    });
+  }
+ }
+}
